@@ -1,0 +1,36 @@
+CREATE DATABASE ksiegarnia;
+
+CREATE USER 'spring'@'localhost' IDENTIFIED BY 'spring';
+GRANT ALL PRIVILEGES ON ksiegarnia.* TO 'test'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+CREATE TABLE `ksiazki`(
+        `id` int(11) NOT NULL auto_increment,
+        `nazwa` varchar(100) NOT NULL,
+        `autor` varchar(50),
+        `wydawnictwo` varchar(50) NOT NULL,
+        `cena` float NOT NULL default '0',
+        PRIMARY KEY (`id`));
+INSERT INTO `ksiazki` VALUES (1, 'Hamlet', 'William Shakespeare', 'AAAA', 6.5);
+
+CREATE TABLE `users`(
+        `username` VARCHAR(25) NOT NULL,
+        `password` VARCHAR(60) NOT NULL,
+        enable boolean NOT NULL DEFAULT TRUE,
+        PRIMARY KEY (`username`));
+
+INSERT INTO `users` (username, password) VALUES ("admin", "{noop}admin");
+INSERT INTO `users` (username, password) VALUES ("user", "{noop}user");
+
+CREATE TABLE `authorities`(
+        `username` VARCHAR(50) NOT NULL,
+        `authority` VARCHAR(50) NOT NULL,
+        UNIQUE KEY `authorieties_idx_1` (`username`, `authority`),
+        FOREIGN KEY (`username`)
+        REFERENCES `users` (`username`));
+
+INSERT INTO `authorities` VALUES ("admin", "ADMIN");
+INSERT INTO `authorities` VALUES ("admin", "USER");
+INSERT INTO `authorities` VALUES ("user", "USER");
+
+
